@@ -10,7 +10,7 @@ option java_package = "me.aki.server.bot.grpc";
 option java_outer_classname = "GuildMessageProto";
 
 service QQGuild{
-  rpc OnMessage(google.protobuf.Empty) returns(stream Message) {}
+  rpc GetMessage(google.protobuf.Empty) returns(stream Message) {}
 }
 
 // Define an enum for MessageType
