@@ -1,0 +1,65 @@
+syntax = "proto3";
+// protoc --go_out=../ --go-grpc_out=../ --go_opt=paths=source_relative --go-grpc_opt=paths=source_relative bot_message.proto
+// protoc --go_out=./ --go-grpc_out=./ .\protos\qq_guild\message.proto
+package entity;
+import "google/protobuf/empty.proto";
+
+option go_package = "internal/pkg/grpc";
+option java_multiple_files = true;
+option java_package = "me.aki.server.bot.grpc";
+option java_outer_classname = "GuildMessageProto";
+
+service QQGuild{
+  rpc OnMessage(google.protobuf.Empty) returns(stream Message) {}
+}
+
+// Define an enum for MessageType
+enum MessageType {
+  TEXT = 0;
+  MENTION_USER = 1;
+  EMOJI = 2;
+}
+
+// Message struct becomes a protobuf message
+message Message {
+  string event_id = 1;
+  string msg_id = 2;
+  repeated MessageData messages = 3;
+  repeated Attachment attachments = 4;
+}
+
+// MessageData struct
+message MessageData {
+  MessageType type = 1;
+  string data = 2;
+}
+
+// Attachment struct
+message Attachment {
+  string url = 1;
+  string base64 = 2;
+}
+
+// MsgResp struct
+message MsgResp {
+  string id = 1;
+  string channel_id = 2;
+  string guild_id = 3;
+  string content = 4;
+  int64 timestamp = 5; // Timestamps are typically represented as int64 in protobuf
+  bool tts = 6;
+  bool mention_everyone = 7;
+  User author = 8; // Nested User message
+  bool pinned = 9;
+  int32 type = 10;
+  int32 flags = 11;
+  string seq_in_channel = 12;
+}
+
+// Define a User message for the nested author struct in MsgResp
+message User {
+  string id = 1;
+  string username = 2;
+  string avatar = 3;
+  bool bot = 4;
+}
