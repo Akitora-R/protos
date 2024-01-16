@@ -16,103 +16,103 @@ service QQGuild{
 
 // Message 消息结构体定义
 message Message {
-    string id = 1;  // 消息ID
-    string channel_id = 2;  // 子频道ID
-    string guild_id = 3;  // 频道ID
-    string content = 4;  // 内容
-    google.protobuf.Timestamp timestamp = 5;  // 发送时间
-    google.protobuf.Timestamp edited_timestamp = 6;  // 消息编辑时间
-    bool mention_everyone = 7;  // 是否@all
-    User author = 8;  // 消息发送方
-    Member member = 9;  // 消息发送方Author的member属性，只是部分属性
-    repeated MessageAttachment attachments = 10;  // 附件
-    repeated Embed embeds = 11;  // 结构化消息-embeds
-    repeated User mentions = 12;  // 消息中的提醒信息(@)列表
-    Ark ark = 13;  // ark 消息
-    bool direct_message = 14;  // 私信消息
-    string seq_in_channel = 15;  // 子频道 seq
-    MessageReference message_reference = 16;  // 引用的消息
-string src_guild_id = 17; // 私信场景下，该字段用来标识从哪个频道发起的私信
+  string id = 1;  // 消息ID
+  string channel_id = 2;  // 子频道ID
+  string guild_id = 3;  // 频道ID
+  string content = 4;  // 内容
+  google.protobuf.Timestamp timestamp = 5;  // 发送时间
+  google.protobuf.Timestamp edited_timestamp = 6;  // 消息编辑时间
+  bool mention_everyone = 7;  // 是否@all
+  User author = 8;  // 消息发送方
+  Member member = 9;  // 消息发送方Author的member属性，只是部分属性
+  repeated MessageAttachment attachments = 10;  // 附件
+  repeated Embed embeds = 11;  // 结构化消息-embeds
+  repeated User mentions = 12;  // 消息中的提醒信息(@)列表
+  Ark ark = 13;  // ark 消息
+  bool direct_message = 14;  // 私信消息
+  string seq_in_channel = 15;  // 子频道 seq
+  MessageReference message_reference = 16;  // 引用的消息
+  string src_guild_id = 17; // 私信场景下，该字段用来标识从哪个频道发起的私信
 }
 
 // MessageReference 引用消息
 message MessageReference {
-string message_id = 1; // 消息 id
-bool ignore_get_message_error = 2; // 是否忽律获取消息失败错误
+  string message_id = 1; // 消息 id
+  bool ignore_get_message_error = 2; // 是否忽律获取消息失败错误
 }
 
 // Ark 消息模版
 message Ark {
-int32 template_id = 1; // ark 模版 ID
-repeated ArkKV kv = 2; // ArkKV 数组
+  int32 template_id = 1; // ark 模版 ID
+  repeated ArkKV kv = 2; // ArkKV 数组
 }
 
 // ArkKV Ark 键值对
 message ArkKV {
-string key = 1;
-string value = 2;
-repeated ArkObj obj = 3;
+  string key = 1;
+  string value = 2;
+  repeated ArkObj obj = 3;
 }
 
 // ArkObj Ark 对象
 message ArkObj {
-repeated ArkObjKV obj_kv = 1;
+  repeated ArkObjKV obj_kv = 1;
 }
 
 // ArkObjKV Ark 对象键值对
 message ArkObjKV {
-string key = 1;
-string value = 2;
+  string key = 1;
+  string value = 2;
 }
 
 // Embed 结构
 message Embed {
-string title = 1;
-string description = 2;
-string prompt = 3; // 消息弹窗内容，消息列表摘要
-MessageEmbedThumbnail thumbnail = 4;
-repeated EmbedField fields = 5;
+  string title = 1;
+  string description = 2;
+  string prompt = 3; // 消息弹窗内容，消息列表摘要
+  MessageEmbedThumbnail thumbnail = 4;
+  repeated EmbedField fields = 5;
 }
 
 // MessageEmbedThumbnail embed 消息的缩略图对象
 message MessageEmbedThumbnail {
-string url = 1;
+  string url = 1;
 }
 
 // EmbedField Embed字段描述
 message EmbedField {
-string name = 1;
-string value = 2;
+  string name = 1;
+  string value = 2;
 }
 
 // MessageAttachment 附件定义
 message MessageAttachment {
-string url = 1;
+  string url = 1;
 }
 
 // MessageReactionUsers 消息表情表态用户列表
 message MessageReactionUsers {
-repeated User users = 1;
-string cookie = 2;
-bool is_end = 3;
+  repeated User users = 1;
+  string cookie = 2;
+  bool is_end = 3;
 }
 
 // User 用户
 message User {
-string id = 1;
-string username = 2;
-string avatar = 3;
-bool bot = 4;
-string union_openid = 5; // 特殊关联应用的 openid
-string union_user_account = 6; // 机器人关联的用户信息，与union_openid关联的应用是同一个
+  string id = 1;
+  string username = 2;
+  string avatar = 3;
+  bool bot = 4;
+  string union_openid = 5; // 特殊关联应用的 openid
+  string union_user_account = 6; // 机器人关联的用户信息，与union_openid关联的应用是同一个
 }
 
 // Member 群成员
 message Member {
-string guild_id = 1;
-google.protobuf.Timestamp joined_at = 2;
-string nick = 3;
-User user = 4;
-repeated string roles = 5;
-string op_user_id = 6;
+  string guild_id = 1;
+  google.protobuf.Timestamp joined_at = 2;
+  string nick = 3;
+  User user = 4;
+  repeated string roles = 5;
+  string op_user_id = 6;
 }
