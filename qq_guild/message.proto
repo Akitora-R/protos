@@ -11,7 +11,36 @@ option java_package = "me.aki.server.bot.grpc.stub";
 option java_outer_classname = "GuildMessageProto";
 
 service QQGuild{
-  rpc GetMessage(google.protobuf.Empty) returns(stream Message) {}
+  rpc GetMessage(google.protobuf.Empty) returns(stream GuildEventData) {}
+}
+
+message GuildEventData {
+  string id = 1;
+  EventType event_type = 2;
+  User self = 3;
+  oneof data {
+    Message message_event_data = 4;
+    MessageDeleteEventData message_delete_event_data = 5;
+    Member member_event_data = 6;
+    MessageReaction message_reaction_event_data = 7;
+    Interaction interaction_event_data = 8;
+  }
+}
+
+enum EventType {
+  // 默认的未指定值
+  EVENT_TYPE_UNSPECIFIED = 0;
+
+  // 枚举值
+  MESSAGE = 1;
+  MESSAGE_DELETE = 2;
+  DIRECT_MESSAGE = 3;
+  GUILD_MEMBER_ADD = 4;
+  GUILD_MEMBER_UPDATE = 5;
+  GUILD_MEMBER_REMOVE = 6;
+  MESSAGE_REACTION_ADD = 7;
+  MESSAGE_REACTION_REMOVE = 8;
+  INTERACTION_CREATE = 9;
 }
 
 // Message 消息结构体定义
@@ -33,6 +62,11 @@ message Message {
   string seq_in_channel = 15;  // 子频道 seq
   MessageReference message_reference = 16;  // 引用的消息
   string src_guild_id = 17; // 私信场景下，该字段用来标识从哪个频道发起的私信
+}
+
+message MessageDeleteEventData {
+  Message message = 1;
+  User op_user = 2;
 }
 
 // MessageReference 引用消息
@@ -115,4 +149,65 @@ message Member {
   User user = 4;
   repeated string roles = 5;
   string op_user_id = 6;
+}
+
+// Interaction 互动行为对象
+message Interaction {
+  string id = 1;             // 互动行为唯一标识
+  string application_id = 2; // 应用ID
+  InteractionType type = 3;  // 互动类型
+  InteractionData data = 4;  // 互动数据
+  string guild_id = 5;       // 频道 ID
+  string channel_id = 6;     // 子频道 ID
+  uint32 version = 7;        // 版本，默认为 1
+}
+
+// InteractionType 互动类型
+enum InteractionType {
+  INTERACTION_TYPE_UNSPECIFIED = 0; // 未指定
+  INTERACTION_TYPE_PING = 1;        // ping
+  INTERACTION_TYPE_COMMAND = 2;     // 命令
+}
+
+// InteractionData 互动数据
+message InteractionData {
+  string name = 1;           // 标题
+  InteractionDataType type = 2; // 数据类型，不同数据类型对应不同的 resolved 数据
+  bytes resolved = 3;        // 跟不同的互动类型和数据类型有关系的数据
+}
+
+// InteractionDataType 互动数据类型
+enum InteractionDataType {
+  INTERACTION_DATA_TYPE_UNSPECIFIED = 0; // 未指定
+  INTERACTION_DATA_TYPE_CHAT_SEARCH = 9; // 聊天框搜索
+}
+
+// ReactionTargetType 表情表态对象类型
+enum ReactionTargetType {
+  REACTION_TARGET_TYPE_UNSPECIFIED = 0; // 未指定
+  REACTION_TARGET_TYPE_MSG = 1;         // 消息
+  REACTION_TARGET_TYPE_FEED = 2;        // 帖子
+  REACTION_TARGET_TYPE_COMMENT = 3;     // 评论
+  REACTION_TARGET_TYPE_REPLY = 4;       // 回复
+}
+
+// MessageReaction 表情表态动作
+message MessageReaction {
+  string user_id = 1;     // 用户ID
+  string channel_id = 2;  // 子频道ID
+  string guild_id = 3;    // 频道ID
+  ReactionTarget target = 4; // 表态对象
+  Emoji emoji = 5;          // 表情
+}
+
+// ReactionTarget 表态对象类型
+message ReactionTarget {
+  string id = 1;                    // ID
+  ReactionTargetType type = 2;      // 类型
+}
+
+// Emoji 表情
+message Emoji {
+  string id = 1;   // ID
+  int32 type = 2;  // 类型
 }
