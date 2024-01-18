@@ -10,8 +10,9 @@ option java_multiple_files = true;
 option java_package = "me.aki.server.bot.grpc.stub";
 option java_outer_classname = "GuildMessageProto";
 
-service QQGuild{
-  rpc GetMessage(google.protobuf.Empty) returns(stream GuildEventData) {}
+service QQGuildService{
+  rpc GetMessageStream(google.protobuf.Empty) returns (stream GuildEventData);
+  rpc PostEvent(GuildEventData) returns (google.protobuf.Empty);
 }
 
 message GuildEventData {
